@@ -6,16 +6,21 @@ public class IdentifyAndCorrectLoopInLinkedList extends LinkedListBase {
 
     HashMap<Node, Node> visited = new HashMap<>();
 
-    public boolean detectLoop(Node head) {
-        Node node = head.next;
-        while (node != null) {
-            if (visited.containsKey(node))
-                return true;
-            else
+    public void detectLoopAndCorrect(Node head) {
+        Node node = head;
+        boolean loopFound = false;
+
+        while (node.next != null) {
+            if (visited.containsKey(node.next)) {
+                loopFound = true;
+                break;
+            } else {
                 visited.put(node, node);
+            }
             node = node.next;
         }
-        return false;
+        if (loopFound)
+            node.next = null;
     }
 
     public static void main(String[] args) {
@@ -27,6 +32,7 @@ public class IdentifyAndCorrectLoopInLinkedList extends LinkedListBase {
         obj.addNode(new Node(3, null));
         obj.head.next.next.next.next = obj.head;
 
-        System.out.println(obj.detectLoop(obj.head));
+        obj.detectLoopAndCorrect(obj.head);
+        obj.printList();
     }
 }
